@@ -1,0 +1,80 @@
+services:
+  db:
+    image: postgres:16.10-alpine
+    environment:
+      POSTGRES_DB: quickora
+      POSTGRES_USER: quickora
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-quickora_local}
+    ports:
+      - "5432:5432"
+    volumes:
+      - quickora-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quickora -d quickora"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: build
+    environment:
+      NODE_ENV: production
+      WEB_ORIGIN: http://localhost:5173
+      DATABASE_URL: postgresql://quickora:${POSTGRES_PASSWORD:-quickora_local}@db:5432/quickora?schema=public
+      JWT_SECRET: ${JWT_SECRET:-quickora-local-development-secret-change-before-production}
+      COOKIE_SECURE: "false"
+      SEED_CUSTOMER_PASSWORD: ${SEED_CUSTOMER_PASSWORD:-QuickoraCustomer123!}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-QuickoraAdmin123!}
+      SEED_RIDER_PASSWORD: ${SEED_RIDER_PASSWORD:-QuickoraRider123!}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["sh", "-c", "npm run db:migrate -w @quickora/api && npm run db:seed:prod -w @quickora/api"]
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: runtime
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      WEB_ORIGIN: http://localhost:5173
+      DATABASE_URL: postgresql://quickora:${POSTGRES_PASSWORD:-quickora_local}@db:5432/quickora?schema=public
+      JWT_SECRET: ${JWT_SECRET:-quickora-local-development-secret-change-before-production}
+      COOKIE_SECURE: "false"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "4000:4000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "5173:80"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  quickora-postgres:
