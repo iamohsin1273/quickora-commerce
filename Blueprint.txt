@@ -1,0 +1,1222 @@
+Blueprint:
+
+# MASTER BUILD PROMPT: QUICKORA — FULL-STACK QUICK-COMMERCE PLATFORM
+
+## 1. YOUR ROLE AND OBJECTIVE
+
+You are a principal full-stack software architect, senior UI/UX designer, senior React engineer, Node.js backend engineer, database architect, QA engineer, security engineer, and DevOps engineer.
+
+Your mission is to DESIGN, IMPLEMENT, TEST, DOCUMENT, AND PACKAGE a complete, modern quick-commerce platform inspired by the convenience and user experience of Instamart, Blinkit, and Zepto.
+
+Build an original product called **QUICKORA**.
+
+This is not a request for a tutorial, architecture proposal, wireframe, static mockup, or code snippets. I expect a real, runnable, full-stack repository with a beautiful user interface, a functional backend, persistent database storage, realistic seed data, working user journeys, automated tests, Docker configuration, and a ZIP archive containing the complete project.
+
+You have permission to create and edit project files, execute terminal commands, install dependencies when appropriate, run the application, inspect errors, fix them, and package the final repository.
+
+Do not stop after creating the frontend. Do not leave the core functionality as TODO comments. Do not claim that something works unless you have implemented and tested it.
+
+If you encounter a technical limitation, choose a practical alternative, document it, and continue.
+
+## 2. PRODUCT VISION
+
+QUICKORA is a premium Indian hyperlocal quick-commerce platform for delivering groceries, snacks, beverages, fruits, vegetables, dairy, household supplies, personal care products, and other daily essentials.
+
+The application should feel like a real startup product that could be demonstrated to investors, recruiters, customers, and engineering teams.
+
+Target market: Indian urban customers.
+
+Default currency: INR (₹).
+
+Default location: Chennai, Tamil Nadu, India.
+
+Default language: English.
+
+Design for desktop, tablet, and mobile, with a mobile-first customer shopping experience.
+
+Use original branding and original interface layouts. Do not copy proprietary logos, assets, or exact screens from Blinkit, Zepto, or Swiggy Instamart.
+
+## 3. REQUIRED TECHNOLOGY STACK
+
+Use the following stack unless a genuine compatibility issue requires a documented alternative.
+
+### Frontend
+- React with TypeScript.
+- Vite.
+- Tailwind CSS.
+- shadcn/ui or accessible, reusable custom UI components.
+- React Router.
+- TanStack Query for server-state management.
+- Zustand or an equally suitable lightweight state manager for cart and local UI state.
+- React Hook Form and Zod for forms and validation.
+- Lucide React icons.
+- Recharts for dashboard analytics.
+- Leaflet with OpenStreetMap, or a clearly documented map fallback, for location and delivery visualization.
+
+### Backend
+- Node.js.
+- Express.js.
+- TypeScript.
+- REST API architecture.
+- Prisma ORM.
+- PostgreSQL.
+- Zod validation for API inputs.
+- JWT-based authentication using secure, appropriately configured HTTP-only cookies or another documented secure session strategy.
+- Role-based access control.
+- Swagger/OpenAPI API documentation.
+
+### Infrastructure and quality
+- Docker.
+- Docker Compose.
+- Multi-stage production Dockerfiles.
+- Nginx for frontend production serving and API reverse proxying where appropriate.
+- ESLint and Prettier.
+- Vitest and React Testing Library for frontend tests.
+- Jest or Vitest with Supertest for backend integration tests.
+- Playwright for critical end-to-end user journeys where the environment supports it.
+- GitHub Actions CI workflow.
+
+Pin compatible dependency versions in package manifests and commit a lockfile.
+
+Do not use deprecated packages or insecure shortcuts merely to make the application appear functional.
+
+## 4. REPOSITORY STRUCTURE
+
+Create a well-organized monorepo resembling the following:
+
+quickora/
+  apps/
+    web/
+      public/
+      src/
+        app/
+        assets/
+        components/
+          ui/
+          layout/
+          products/
+          cart/
+          checkout/
+          orders/
+          admin/
+          delivery/
+        features/
+        hooks/
+        lib/
+        pages/
+        routes/
+        stores/
+        types/
+        styles/
+      tests/
+      Dockerfile
+      nginx.conf
+      package.json
+      vite.config.ts
+
+    api/
+      prisma/
+        schema.prisma
+        seed.ts
+        migrations/
+      src/
+        config/
+        middleware/
+        modules/
+          auth/
+          users/
+          addresses/
+          categories/
+          products/
+          inventory/
+          carts/
+          coupons/
+          checkout/
+          payments/
+          orders/
+          delivery/
+          notifications/
+          reviews/
+          admin/
+          analytics/
+        routes/
+        utils/
+        app.ts
+        server.ts
+      tests/
+      Dockerfile
+      package.json
+
+  packages/
+    shared/
+      src/
+      package.json
+
+  infrastructure/
+    docker/
+    nginx/
+
+  docs/
+    ARCHITECTURE.md
+    API.md
+    DATABASE.md
+    SECURITY.md
+    TESTING.md
+    DEPLOYMENT.md
+    USER_GUIDE.md
+
+  .github/
+    workflows/
+      ci.yml
+
+  .env.example
+  .gitignore
+  .dockerignore
+  docker-compose.yml
+  package.json
+  package-lock.json
+  README.md
+  LICENSE
+
+Adapt the structure when needed, but maintain clear boundaries between the customer frontend, API, shared types, infrastructure, and documentation.
+
+Use a root-level workspace so the repository can be installed and operated consistently.
+
+## 5. VISUAL DESIGN SYSTEM
+
+Create a polished, production-quality visual identity.
+
+Brand: QUICKORA.
+
+Brand personality:
+- Fast.
+- Trustworthy.
+- Fresh.
+- Premium but affordable.
+- Friendly.
+- Modern and technology-driven.
+
+Suggested palette:
+- Primary forest green: #176B45.
+- Bright lime accent: #C8F169.
+- Main background: #F7F8F4.
+- White surfaces: #FFFFFF.
+- Primary text: #18251D.
+- Secondary text: #69746D.
+- Borders: #E4E9E2.
+- Success: accessible green.
+- Warning: accessible amber.
+- Error: accessible red.
+
+Use CSS variables or design tokens so colors can be changed globally.
+
+Typography:
+- Use Inter or a comparable modern sans-serif.
+- Establish a consistent typographic scale.
+- Use strong, readable headings.
+- Maintain comfortable line heights and appropriate font weights.
+
+Visual requirements:
+- Clean, generous spacing.
+- Soft rounded corners.
+- Subtle shadows.
+- High-quality product imagery.
+- Clear visual hierarchy.
+- Attractive empty states and skeleton loaders.
+- Smooth, restrained transitions.
+- Accessible focus states.
+- Consistent buttons, inputs, badges, cards, dialogs, and navigation.
+- Consistent spacing and grid systems.
+- Responsive layouts at mobile, tablet, laptop, and large desktop sizes.
+
+Avoid:
+- Generic AI-generated dashboard layouts.
+- Excessive gradients.
+- Excessive glassmorphism.
+- Huge empty hero sections.
+- Oversized rounded cards everywhere.
+- Emoji used as substitutes for professional product imagery.
+- Broken image placeholders.
+- Fake charts with arbitrary values.
+- Buttons that do nothing.
+- Lorem ipsum.
+- Unstyled default HTML forms.
+
+Create a distinctive QUICKORA logo using a simple original vector mark or CSS/SVG treatment.
+
+Use suitable licensed or publicly accessible product imagery. If an image fails to load, display a visually consistent local fallback. Keep external image dependencies documented.
+
+## 6. CUSTOMER SHOPPING APPLICATION
+
+Implement a complete customer-facing storefront.
+
+### 6.1 Homepage
+
+Create a premium shopping homepage with:
+
+- Responsive header.
+- QUICKORA logo.
+- Delivery location selector.
+- Editable delivery address.
+- Search field with autocomplete.
+- Login/profile action.
+- Cart icon with live item count.
+- Delivery estimate displayed as an estimate, not a guarantee.
+- Hero campaign banner.
+- Category navigation.
+- Popular products.
+- Best sellers.
+- Frequently bought items.
+- Special offers.
+- Recommended products.
+- Recently viewed products.
+- Promotional product collections.
+- Footer with useful links, support, policies, and contact information.
+
+The first viewport should immediately communicate quick delivery, product availability, offers, and the primary shopping action.
+
+Use a coherent layout rather than a collection of unrelated cards.
+
+### 6.2 Product categories
+
+Seed the following categories:
+
+- Fruits and Vegetables.
+- Dairy, Bread and Eggs.
+- Snacks and Munchies.
+- Cold Drinks and Juices.
+- Breakfast and Instant Food.
+- Atta, Rice and Dal.
+- Oils and Spices.
+- Personal Care.
+- Household Essentials.
+- Baby Care.
+- Pet Supplies.
+- Ice Cream and Desserts.
+
+Each category must have a category image or appropriate visual treatment.
+
+Clicking a category must navigate to a functional listing page with filtering and sorting.
+
+### 6.3 Product catalog
+
+Create a complete product listing experience.
+
+Every product should support:
+
+- Product ID and slug.
+- Name.
+- Description.
+- Brand.
+- Category.
+- Image.
+- MRP.
+- Selling price.
+- Discount percentage.
+- Unit or package size.
+- Stock availability.
+- SKU.
+- Featured flag.
+- Rating and review count when supported by actual seed data.
+- Active/inactive status.
+
+The catalog must include at least 40 realistic seeded products, using appropriate Indian grocery products, sensible INR prices, and realistic package sizes.
+
+Use a mixture of fruits, vegetables, dairy products, snacks, beverages, packaged foods, and household essentials.
+
+Include:
+- Search.
+- Category filtering.
+- Brand filtering where applicable.
+- Price-range filtering.
+- In-stock filtering.
+- Sorting by popularity, price, rating, and discount.
+- Pagination or incremental loading.
+- Product detail view.
+- Product image gallery where useful.
+- Quantity selector.
+- Add-to-cart button.
+- Related products.
+- Loading, error, and empty states.
+
+Filters must affect actual displayed results.
+
+### 6.4 Search experience
+
+Implement debounced product search backed by the API.
+
+Provide:
+- Search suggestions.
+- Recent searches.
+- Popular searches.
+- Matching product names and brands.
+- Clear search control.
+- Empty-result suggestions.
+- Keyboard accessibility.
+
+Do not create a search box that only filters the first few hardcoded frontend items.
+
+### 6.5 Product cards
+
+Create reusable product cards showing:
+
+- Product image.
+- Product name.
+- Package size.
+- MRP and discounted price.
+- Discount badge where applicable.
+- Rating only when supported by data.
+- Stock status.
+- Add button.
+
+When a customer adds a product, the button should transition into a quantity stepper.
+
+Cart quantities must update immediately, while the backend remains the source of truth for prices and stock during checkout.
+
+### 6.6 Shopping cart
+
+Implement a working cart with:
+
+- Add item.
+- Increase quantity.
+- Decrease quantity.
+- Remove item.
+- Clear cart.
+- Quantity limits.
+- Stock validation.
+- Subtotal.
+- Item discounts.
+- Coupon discount.
+- Delivery fee.
+- Platform fee if applicable.
+- Tax calculation where applicable.
+- Minimum order rules.
+- Final payable amount.
+- Continue shopping.
+- Proceed to checkout.
+
+Persist the cart appropriately for guest users and authenticated customers.
+
+Merge the guest cart after login without creating duplicate lines.
+
+Recalculate all monetary values on the server. Never trust totals supplied by the browser.
+
+Show useful empty-cart and unavailable-product states.
+
+### 6.7 Authentication and user accounts
+
+Implement:
+
+- Customer registration.
+- Login.
+- Logout.
+- Session restoration.
+- Profile page.
+- Name and phone fields.
+- Email where appropriate.
+- Address book.
+- Default address.
+- Order history.
+- Order details.
+- Password change or secure reset workflow.
+- Protected routes.
+
+Use proper password hashing, secure cookies, authentication validation, and authorization checks.
+
+Do not store plaintext passwords.
+
+Provide a development-only seeded customer account and explain the credentials in the README.
+
+Do not include production credentials in the repository.
+
+### 6.8 Address and location management
+
+Create an address selection experience with:
+
+- Full name.
+- Phone number.
+- House/building.
+- Street.
+- Landmark.
+- Locality.
+- City.
+- State.
+- PIN code.
+- Address type: Home, Work, or Other.
+- Default-address toggle.
+
+Validate Indian PIN codes and required address fields.
+
+Allow users to add, edit, delete, and select addresses.
+
+Include a map-based location picker when practical. If geocoding requires an external provider, document the dependency and provide a working manual-address fallback.
+
+Implement a serviceability check based on configured delivery zones or PIN codes. Show clear messages when an address is unsupported.
+
+### 6.9 Checkout
+
+Implement a multi-step checkout:
+
+1. Select delivery address.
+2. Review cart.
+3. Apply coupon.
+4. Choose delivery slot or estimated delivery window.
+5. Choose payment method.
+6. Review final bill.
+7. Place order.
+8. Display order confirmation.
+
+Support:
+- Cash on delivery.
+- Demo payment mode.
+- Optional payment gateway integration through environment-based configuration.
+
+Do not claim a real payment was processed when using demo mode.
+
+For payment integration, implement a provider abstraction and verify payment results on the server. Never trust a client-side success redirect.
+
+Revalidate product availability, coupon eligibility, address serviceability, and price immediately before order creation.
+
+Use database transactions to create orders and reserve or decrement stock safely. Prevent overselling during concurrent requests.
+
+If checkout fails, preserve the cart and show an actionable error.
+
+### 6.10 Coupons and offers
+
+Implement coupon functionality.
+
+Coupon fields should include:
+- Code.
+- Discount type: percentage or fixed amount.
+- Discount value.
+- Minimum order value.
+- Maximum discount.
+- Start and expiry dates.
+- Usage limits.
+- Per-customer usage limits.
+- Active status.
+- Applicable product/category restrictions if appropriate.
+
+Seed a few clearly documented demo coupons.
+
+Examples:
+- WELCOME10.
+- QUICK50.
+- FRESH15.
+
+These must follow real validation rules. Do not blindly accept a coupon because its text matches a code.
+
+### 6.11 Order tracking
+
+Implement an order lifecycle:
+
+- Pending.
+- Confirmed.
+- Preparing.
+- Ready for pickup.
+- Out for delivery.
+- Delivered.
+- Cancelled.
+- Failed where appropriate.
+
+Represent permitted transitions explicitly.
+
+Create:
+- Order confirmation screen.
+- Order timeline.
+- Order detail page.
+- Order tracking screen.
+- Delivery status updates.
+- Order item list.
+- Payment status.
+- Address snapshot.
+- Bill breakdown.
+- Estimated delivery window.
+- Cancellation action when permitted.
+- Reorder action.
+
+The timeline should reflect real persisted order statuses.
+
+Use polling or another simple real-time mechanism for status updates. Document any limitations.
+
+Do not pretend to provide GPS live tracking if actual location data is unavailable. Use a clearly labelled simulated delivery map only in demo mode.
+
+## 7. ADMIN DASHBOARD
+
+Create a separate, polished administrative interface with protected routes and role-based permissions.
+
+### 7.1 Dashboard overview
+
+Display metrics derived from persisted application data:
+
+- Total orders.
+- Revenue from qualifying orders.
+- Average order value.
+- Registered customers.
+- Active products.
+- Low-stock products.
+- Pending orders.
+- Order cancellation rate.
+
+Include date-range filters and charts for sales trends, order volume, category performance, and order status distribution.
+
+If there is no historical data, display an honest empty state or explicitly labelled seeded demo data.
+
+Never manufacture metrics and present them as actual production performance.
+
+### 7.2 Product management
+
+Provide:
+- Product table.
+- Product search.
+- Category filter.
+- Stock filter.
+- Create product.
+- Edit product.
+- Activate/deactivate product.
+- Update price.
+- Update MRP.
+- Upload or configure product images.
+- Update package size.
+- Update SKU.
+- Update category.
+- Pagination.
+- Form validation.
+- Success and error notifications.
+
+### 7.3 Inventory management
+
+Implement:
+- Stock quantities.
+- Reserved quantities if reservations are used.
+- Available-to-sell quantities.
+- Low-stock thresholds.
+- Stock adjustments.
+- Inventory movement history.
+- Restock operations.
+- Out-of-stock alerts.
+
+Record who made each administrative adjustment and when.
+
+Avoid allowing a customer to modify inventory through a customer-facing API.
+
+### 7.4 Order management
+
+Create an operational order table with:
+
+- Order ID.
+- Customer.
+- Date and time.
+- Amount.
+- Payment method.
+- Payment status.
+- Fulfillment status.
+- Assigned delivery partner.
+- Actions.
+
+Allow administrators to view order details, update permitted statuses, cancel orders where appropriate, and assign delivery partners.
+
+Validate every status transition on the server.
+
+Record an audit trail for sensitive administrative operations.
+
+### 7.5 Customer management
+
+Show registered customers, basic profile information, order counts, and order history.
+
+Protect personal information and restrict access to authorized administrators.
+
+Do not expose passwords, authentication tokens, or sensitive internal fields.
+
+### 7.6 Coupon management
+
+Allow authorized administrators to create, edit, deactivate, and inspect coupons.
+
+Enforce coupon validity on the backend.
+
+### 7.7 Delivery management
+
+Provide:
+- Delivery partner list.
+- Availability status.
+- Active assignments.
+- Assignment history.
+- Order assignment.
+- Pickup and delivery status.
+- Delivery performance overview.
+
+Use realistic demo data and explain the distinction between simulated and live operational data.
+
+## 8. DELIVERY PARTNER APPLICATION
+
+Create a separate delivery partner interface with responsive mobile layouts.
+
+Implement:
+- Delivery partner login.
+- Assigned deliveries.
+- Available delivery tasks.
+- Order summary.
+- Pickup location.
+- Delivery address.
+- Customer contact information where authorized.
+- Accept/reject actions for eligible tasks.
+- Mark picked up.
+- Mark out for delivery.
+- Mark delivered.
+- Delivery history.
+- Availability toggle.
+- Basic earnings summary using clearly defined demo rules.
+
+Prevent unauthorized access to other delivery partners' assignments.
+
+Require permitted state transitions.
+
+Do not expose customer information to unrelated users.
+
+Provide seeded demo delivery partner credentials.
+
+## 9. DATABASE DESIGN
+
+Design a normalized PostgreSQL schema using Prisma.
+
+Include appropriate models for:
+
+- User.
+- Role or role enum.
+- Address.
+- Category.
+- Product.
+- ProductImage if needed.
+- Inventory.
+- InventoryMovement.
+- Cart.
+- CartItem.
+- Coupon.
+- CouponRedemption.
+- Order.
+- OrderItem.
+- Payment.
+- DeliveryPartnerProfile.
+- DeliveryAssignment.
+- Review.
+- Notification.
+- AuditLog.
+- DeliveryZone or serviceability configuration.
+
+Add:
+- Primary keys.
+- Foreign keys.
+- Unique constraints.
+- Useful indexes.
+- Creation and update timestamps.
+- Appropriate delete behavior.
+- Money handling using integer paise or a suitable fixed-precision decimal representation.
+
+Store an immutable snapshot of relevant product names, prices, quantities, delivery address, and discounts in order records.
+
+Historical orders must remain understandable if the original product or address changes.
+
+Do not store calculated totals without defining how their source values and validation are maintained.
+
+Add migrations and a deterministic seed script.
+
+The application must be capable of starting with an empty database after migrations and seeding.
+
+## 10. API DESIGN
+
+Create a consistent REST API under /api/v1.
+
+Suggested endpoints:
+
+Authentication:
+- POST /api/v1/auth/register
+- POST /api/v1/auth/login
+- POST /api/v1/auth/logout
+- GET /api/v1/auth/me
+- POST /api/v1/auth/refresh if refresh tokens are implemented
+
+Users:
+- GET /api/v1/users/me
+- PATCH /api/v1/users/me
+- GET /api/v1/users/me/addresses
+- POST /api/v1/users/me/addresses
+- PATCH /api/v1/users/me/addresses/:id
+- DELETE /api/v1/users/me/addresses/:id
+
+Catalog:
+- GET /api/v1/categories
+- GET /api/v1/products
+- GET /api/v1/products/:slug
+- GET /api/v1/products/search
+- GET /api/v1/products/:id/reviews
+
+Cart:
+- GET /api/v1/cart
+- POST /api/v1/cart/items
+- PATCH /api/v1/cart/items/:id
+- DELETE /api/v1/cart/items/:id
+
+Coupons:
+- POST /api/v1/coupons/validate
+
+Checkout and orders:
+- POST /api/v1/checkout/quote
+- POST /api/v1/orders
+- GET /api/v1/orders
+- GET /api/v1/orders/:id
+- POST /api/v1/orders/:id/cancel
+- POST /api/v1/orders/:id/reorder
+
+Delivery:
+- GET /api/v1/delivery/tasks
+- POST /api/v1/delivery/tasks/:id/accept
+- POST /api/v1/delivery/tasks/:id/pickup
+- POST /api/v1/delivery/tasks/:id/delivered
+
+Admin:
+- GET /api/v1/admin/analytics
+- GET /api/v1/admin/orders
+- PATCH /api/v1/admin/orders/:id/status
+- GET /api/v1/admin/products
+- POST /api/v1/admin/products
+- PATCH /api/v1/admin/products/:id
+- GET /api/v1/admin/inventory
+- POST /api/v1/admin/inventory/adjustments
+- GET /api/v1/admin/customers
+- GET /api/v1/admin/coupons
+- POST /api/v1/admin/coupons
+- PATCH /api/v1/admin/coupons/:id
+
+Modify these endpoints as necessary to maintain a clean architecture.
+
+Requirements:
+- Consistent JSON response structures.
+- Correct HTTP status codes.
+- Server-side validation.
+- Pagination.
+- Filtering and sorting.
+- Authentication and authorization middleware.
+- Centralized error handling.
+- Request IDs and useful logs.
+- Rate limiting for sensitive endpoints.
+- API versioning.
+- Swagger documentation.
+- No stack traces or secrets in production responses.
+
+Never trust client-supplied role, price, discount, payment status, or stock information.
+
+## 11. SECURITY REQUIREMENTS
+
+Implement production-minded security defaults:
+
+- Secure password hashing using Argon2id or bcrypt with appropriate parameters.
+- Secure session/cookie configuration.
+- Authentication and authorization middleware.
+- Role-based access control.
+- Input validation and normalization.
+- SQL injection protection through parameterized ORM operations.
+- XSS-conscious rendering.
+- CSRF protection where required by the chosen authentication design.
+- Rate limiting.
+- Strict CORS configuration.
+- Security headers.
+- Safe error responses.
+- Environment-based secrets.
+- No credentials committed to source control.
+- No sensitive information in application logs.
+- Request body limits.
+- Ownership checks for orders, addresses, carts, and delivery tasks.
+- Protection against price manipulation.
+- Protection against coupon abuse.
+- Transactional inventory management.
+- Payment verification on the backend.
+- Audit logging for important administrative operations.
+
+Create .env.example containing placeholders only.
+
+Validate required environment variables at startup.
+
+Fail with a clear configuration message when required production variables are missing.
+
+Never disable security checks globally simply to simplify local development.
+
+## 12. USER EXPERIENCE AND ACCESSIBILITY
+
+Implement:
+- Responsive mobile navigation.
+- Desktop navigation.
+- Accessible dialogs.
+- Keyboard navigation.
+- Form labels and helpful validation.
+- ARIA attributes where appropriate.
+- Visible focus indicators.
+- Semantic HTML.
+- Useful loading skeletons.
+- Toast notifications.
+- Confirmation dialogs for destructive actions.
+- Friendly API error messages.
+- Empty states.
+- Retry actions.
+- 404 page.
+- Error boundary.
+- Offline/network failure feedback.
+- Optimized images.
+- Lazy loading where appropriate.
+- Reduced-motion support.
+
+The shopping experience must remain usable on smaller screens.
+
+Ensure the customer can complete a purchase without relying on hover interactions.
+
+## 13. PERFORMANCE
+
+Implement:
+- Efficient database queries.
+- Pagination.
+- Indexed search/filter fields.
+- Avoidance of N+1 query patterns.
+- Appropriate caching for safe read operations.
+- Code splitting where beneficial.
+- Optimized frontend assets.
+- Lazy-loaded routes where appropriate.
+- Reasonable API timeouts.
+- Database connection management.
+- Graceful shutdown.
+
+Do not add Redis, Kafka, Kubernetes, microservices, or other infrastructure without a genuine need. Start with a reliable modular monolith that is easy to understand and deploy.
+
+## 14. DOCKER AND DEVOPS
+
+Create a complete local development environment.
+
+The root docker-compose.yml should orchestrate:
+- PostgreSQL.
+- API.
+- Frontend.
+
+Use service names and internal networking correctly.
+
+Requirements:
+- PostgreSQL health check.
+- API readiness and liveness endpoints.
+- Appropriate startup dependencies.
+- Persistent database volume.
+- Separate internal and exposed ports as needed.
+- Correct production build stages.
+- Non-root runtime users where practical.
+- Minimal runtime images.
+- Environment-variable configuration.
+- Proper signal handling.
+- Restart policies where appropriate.
+- Container logs to stdout/stderr.
+- No secrets baked into images.
+- .dockerignore files.
+- Reliable migration and seeding instructions.
+
+Provide both:
+1. A simple local development workflow.
+2. A Docker Compose workflow.
+
+Use consistent ports and document them.
+
+Suggested local ports:
+- Frontend: 5173.
+- API: 4000.
+- PostgreSQL: 5432.
+
+The frontend must use a configurable API base URL. Configure the Docker/Nginx path so the browser can reach the API correctly.
+
+Do not confuse a container's localhost with the host machine's localhost.
+
+Do not put database credentials or server-only secrets into Vite-exposed variables.
+
+Implement the production frontend build and Nginx configuration where appropriate.
+
+Provide health checks and explain how to inspect container logs, test connectivity, and restart services.
+
+## 15. CI/CD
+
+Create a GitHub Actions workflow that:
+- Installs dependencies reproducibly.
+- Runs linting.
+- Runs TypeScript checks.
+- Runs unit tests.
+- Runs backend tests against an appropriate test database.
+- Builds the frontend.
+- Builds the backend.
+- Builds Docker images when practical.
+
+Fail the workflow if required quality checks fail.
+
+Do not store real secrets in workflow files.
+
+Document how the workflow can later be extended to publish images to Amazon ECR and deploy to AWS.
+
+Do not deploy to real AWS resources without explicit configuration and authorization.
+
+## 16. TESTING REQUIREMENTS
+
+Write meaningful automated tests.
+
+At minimum, test:
+- Customer registration and login.
+- Invalid credentials.
+- Protected routes.
+- Role-based access control.
+- Product search.
+- Product filtering.
+- Cart quantity updates.
+- Invalid product IDs.
+- Coupon validation.
+- Expired coupons.
+- Checkout price recalculation.
+- Out-of-stock rejection.
+- Concurrent inventory changes where feasible.
+- Order creation.
+- Invalid order status transitions.
+- Unauthorized order access.
+- Delivery assignment ownership.
+- Admin product CRUD.
+- Admin inventory adjustments.
+- Customer cannot access admin endpoints.
+
+Frontend tests should cover:
+- Product cards.
+- Cart behavior.
+- Form validation.
+- Checkout errors.
+- Loading states.
+- Protected routes.
+
+Add end-to-end scenarios for:
+1. Browse products, add to cart, and checkout in demo mode.
+2. Sign in and inspect order history.
+3. Administrator creates a product and changes stock.
+4. Delivery partner processes an assigned delivery.
+
+Run the tests. Fix failures. Clearly distinguish tests actually executed from tests that could not be executed due to environment constraints.
+
+Do not merely create test files and claim the suite passed.
+
+## 17. SEED DATA AND DEMO ACCOUNTS
+
+Create realistic deterministic seed data.
+
+Seed:
+- At least 12 product categories.
+- At least 40 products.
+- Several brands.
+- Multiple price points.
+- Product images or reliable image fallbacks.
+- Inventory levels.
+- A handful of valid demo coupons.
+- Sample orders with realistic statuses.
+- A few customers.
+- At least two delivery partners.
+- One administrator.
+
+Provide clearly documented development-only accounts, such as:
+
+Customer:
+customer@quickora.local
+
+Admin:
+admin@quickora.local
+
+Delivery:
+rider@quickora.local
+
+Set their passwords through development environment variables or provide explicitly documented seed-only demo passwords.
+
+Do not reuse these credentials in production.
+
+Ensure that the seed process is repeatable and does not create duplicate records every time it runs.
+
+## 18. OBSERVABILITY
+
+Implement:
+- Structured application logs.
+- Request IDs.
+- API error logging.
+- Health endpoint.
+- Readiness endpoint.
+- Basic request timing.
+- Useful startup and shutdown logs.
+
+Do not log passwords, session tokens, payment secrets, or sensitive customer data.
+
+Document how to monitor the application locally and how to extend it with Prometheus and Grafana later.
+
+## 19. DOCUMENTATION
+
+Write a useful README.md with:
+
+- Project overview.
+- Feature list.
+- Technology stack.
+- Architecture overview.
+- Repository structure.
+- Prerequisites.
+- Installation steps.
+- Environment setup.
+- Local development instructions.
+- Docker Compose startup instructions.
+- Database migration commands.
+- Seed commands.
+- Demo credentials.
+- Frontend URL.
+- API URL.
+- Swagger URL.
+- Test commands.
+- Lint and build commands.
+- Common troubleshooting scenarios.
+- Known limitations.
+- Production deployment considerations.
+- Instructions for generating the ZIP archive.
+
+Include copy-pasteable commands that match the actual package scripts and filenames.
+
+Create Mermaid diagrams in the documentation for:
+- System architecture.
+- Customer checkout flow.
+- Order lifecycle.
+- CI/CD pipeline.
+
+Document assumptions and clearly label simulated features.
+
+## 20. DEFINITION OF DONE
+
+The project is complete only when all feasible requirements below are met.
+
+1. The frontend renders correctly.
+2. The backend starts successfully.
+3. The database schema and migrations work.
+4. The seed script creates demo data.
+5. Customer authentication works.
+6. Product search and filters work.
+7. Cart operations work.
+8. Checkout creates persisted orders.
+9. Prices are calculated and validated server-side.
+10. Stock changes are transaction-safe.
+11. Customers can view their own orders.
+12. Admin routes are protected.
+13. Product management works.
+14. Inventory management works.
+15. Order management works.
+16. Delivery assignment and status updates work.
+17. Responsive layouts work on mobile and desktop.
+18. API documentation is accessible.
+19. Automated tests are written and run where possible.
+20. Production builds complete successfully.
+21. Docker Compose configuration is valid.
+22. Environment configuration is documented.
+23. No production secrets are committed.
+24. No core workflow relies solely on hardcoded frontend state.
+25. No primary button is inert.
+26. No critical page is unfinished.
+27. README instructions match the real project.
+28. The complete repository is packaged into a ZIP archive.
+
+If a requirement cannot be fully implemented, document the exact limitation and its impact instead of pretending it is complete.
+
+## 21. EXECUTION PLAN
+
+Work through the following phases autonomously.
+
+### Phase 1: Inspect and plan
+- Inspect the current working directory.
+- Determine whether it is empty or contains an existing project.
+- Avoid deleting unrelated files.
+- Write a concise implementation plan.
+- Establish the package manager, dependencies, and folder structure.
+
+### Phase 2: Foundation
+- Configure the monorepo.
+- Create shared TypeScript configuration.
+- Configure linting and formatting.
+- Configure environment validation.
+- Configure the PostgreSQL schema and migrations.
+- Configure Express and the frontend application.
+- Establish shared types and API response conventions.
+
+### Phase 3: Backend
+- Implement authentication.
+- Implement catalog and search.
+- Implement cart.
+- Implement coupons.
+- Implement checkout and orders.
+- Implement inventory transactions.
+- Implement admin APIs.
+- Implement delivery APIs.
+- Add validation, error handling, and authorization.
+- Add seed data and API documentation.
+
+### Phase 4: Frontend
+- Build the design system.
+- Build shared layout and navigation.
+- Build homepage and product catalog.
+- Build search and filtering.
+- Build product details and cart.
+- Build authentication and address management.
+- Build checkout and order tracking.
+- Build admin dashboard and management pages.
+- Build delivery partner pages.
+- Add loading, error, empty, and responsive states.
+
+### Phase 5: Integration
+- Connect all interfaces to the backend.
+- Remove temporary hardcoded state where the API should be authoritative.
+- Verify authentication and role permissions.
+- Verify checkout and order persistence.
+- Verify stock and coupon calculations.
+- Fix broken image and routing issues.
+
+### Phase 6: Quality assurance
+- Install dependencies.
+- Run database migrations.
+- Seed the database.
+- Run linting.
+- Run type checks.
+- Run automated tests.
+- Run production builds.
+- Run Docker Compose validation.
+- Start the application if the environment permits.
+- Inspect logs.
+- Exercise critical customer, admin, and delivery workflows.
+- Fix issues and rerun the relevant checks.
+
+### Phase 7: Package and deliver
+- Write final documentation.
+- Generate the ZIP archive.
+- Exclude node_modules, build caches, .git history, real .env files, logs, and other unnecessary files.
+- Include package manifests, lockfiles, source code, tests, Dockerfiles, migrations, seeds, and documentation.
+- Verify the ZIP archive exists and can be opened.
+- Provide the exact absolute path to the ZIP archive.
+- Provide the exact path to the project directory.
+- List commands to start the project.
+- Report what was tested, what passed, and any limitations.
+
+## 22. FINAL OUTPUT CONTRACT
+
+Your final response must include:
+
+1. Project name and a concise feature summary.
+2. The final repository directory.
+3. The exact ZIP archive path.
+4. The command to run the project locally.
+5. The command to start it with Docker Compose.
+6. The frontend, backend, and Swagger URLs.
+7. Demo login credentials and their roles.
+8. Test results.
+9. Build results.
+10. Any remaining limitations or external services that need configuration.
+
+Do not finish by only printing code in the chat.
+
+Do not provide a fake download link.
+
+Do not claim that the ZIP exists until you have generated and verified it.
+
+Do not stop after writing the plan. Continue implementing until the deliverables are complete or a genuine environment limitation prevents further progress.
+
+BEGIN NOW. Inspect the workspace, create QUICKORA, and implement the complete application.

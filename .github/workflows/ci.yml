@@ -1,0 +1,43 @@
+name: QUICKORA CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: quickora
+          POSTGRES_USER: quickora
+          POSTGRES_PASSWORD: quickora_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U quickora -d quickora"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://quickora:quickora_test@localhost:5432/quickora?schema=public
+      JWT_SECRET: ci-only-test-secret-at-least-32-characters-long
+      NODE_ENV: test
+      WEB_ORIGIN: http://localhost:5173
+      COOKIE_SECURE: "false"
+      RUN_DB_TESTS: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run prisma:generate -w @quickora/api
+      - run: npm run db:migrate -w @quickora/api
+      - run: npm run db:seed -w @quickora/api
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
