@@ -12,7 +12,7 @@
     "dev": "concurrently -n api,web -c green,cyan \"npm run dev -w @quickora/api\" \"npm run dev -w @quickora/web\"",
     "build": "npm run build -w @quickora/shared && npm run build -w @quickora/api && npm run build -w @quickora/web",
     "lint": "npm run lint -w @quickora/api && npm run lint -w @quickora/web",
-    "typecheck": "npm run typecheck -w @quickora/api && npm run typecheck -w @quickora/web",
+    "typecheck": "npm run build -w @quickora/shared && npm run typecheck -w @quickora/api && npm run typecheck -w @quickora/web",
     "test": "npm run test -w @quickora/api && npm run test -w @quickora/web",
     "db:migrate": "npm run db:migrate -w @quickora/api",
     "db:seed": "npm run db:seed -w @quickora/api",
