@@ -91,7 +91,7 @@ npm run build
 
 ## Production notes
 
-Use unique, high-entropy secrets, HTTPS, secure cookies, strict origin configuration, managed PostgreSQL backups, a secret manager, monitoring, and a deployment-specific migration workflow. Compose’s development defaults are not production credentials. Payment provider credentials are not configured and no live payment flow is represented. No production deployment is performed by this repository.
+The production-oriented AWS/Terraform foundation, staged setup, and operator checklist are documented in [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md). It targets ECS Fargate in Mumbai and uses CloudFront's managed HTTPS hostname, so a custom domain is not required. Terraform has not been applied and no AWS resources have been created by this repository setup. The application still needs real payment, live dispatch/tracking, and operational support integrations before a full commercial launch; local demo credentials, seed orders, and payment behavior are not production features.
 
 ## Packaging
 

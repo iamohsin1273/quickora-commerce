@@ -1,0 +1,10 @@
+aws_region                   = "ap-south-1"
+environment                  = "production"
+api_image_tag                = "bootstrap"
+api_desired_count            = 0
+db_instance_class            = "db.t4g.medium"
+budget_limit_usd             = 300
+budget_alert_email            = ""
+delivery_pin_prefixes         = ""
+delivery_zone_city            = ""
+delivery_zone_state           = ""

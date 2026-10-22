@@ -29,6 +29,7 @@ const openApiSpec = {
 
 export const app = express();
 app.disable("x-powered-by");
+if (env.TRUST_PROXY_CIDR) app.set("trust proxy", [env.TRUST_PROXY_CIDR]);
 app.use(helmet());
 app.use(cors({ origin: env.WEB_ORIGIN, credentials: true }));
 app.use(express.json({ limit: "100kb" }));
@@ -296,6 +297,9 @@ router.post("/checkout/quote", authenticate, asyncRoute(async (req, res) => {
 router.post("/orders", authenticate, asyncRoute(async (req, res) => {
   const input = z.object({ addressId: z.string().min(1), couponCode: z.string().trim().max(40).optional(), paymentMethod: z.nativeEnum(PaymentMethod) }).safeParse(req.body);
   if (!input.success) return error(res, 400, "VALIDATION_ERROR", "Choose an address and payment method.");
+  if (env.NODE_ENV === "production" && input.data.paymentMethod === PaymentMethod.DEMO) {
+    return error(res, 400, "PAYMENT_UNAVAILABLE", "Demo payments are disabled in production. Choose cash on delivery.");
+  }
   const deliveryAddress = await prisma.address.findFirst({ where: { id: input.data.addressId, userId: user(res).id } });
   if (!deliveryAddress) return error(res, 404, "ADDRESS_NOT_FOUND", "Choose a saved delivery address.");
   const zones = await prisma.deliveryZone.findMany({ where: { active: true }, select: { pinPrefix: true } });
