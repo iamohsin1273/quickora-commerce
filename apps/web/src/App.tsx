@@ -371,7 +371,7 @@ function SignInPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const formSchema = register ? authSchema.extend({ name: z.string().trim().min(2, "Enter your name"), phone: z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian phone number") }) : authSchema;
-  const form = useForm<AuthValues>({ resolver: zodResolver(formSchema), defaultValues: { name: "", email: "", phone: "", password: "" } });
+  const form = useForm<AuthValues>({ resolver: zodResolver(formSchema), defaultValues: { email: "", password: "" }, shouldUnregister: true });
   const mutation = useMutation({
     mutationFn: (values: AuthValues) => api<{ user: SessionUser }>(register ? "/auth/register" : "/auth/login", { method: "POST", body: JSON.stringify(values) }),
     onSuccess: async ({ user }) => {
