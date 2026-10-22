@@ -236,6 +236,31 @@ async function main() {
     });
   }
 
+  if (process.env.CATALOG_ONLY === "true") {
+    const prefixes = (process.env.DELIVERY_PIN_PREFIXES ?? "")
+      .split(",")
+      .map(prefix => prefix.trim())
+      .filter(Boolean);
+    if (prefixes.length === 0 || prefixes.some(prefix => !/^\d{1,6}$/.test(prefix))) {
+      throw new Error("Set DELIVERY_PIN_PREFIXES to one or more comma-separated delivery PIN prefixes.");
+    }
+    const city = process.env.DELIVERY_ZONE_CITY?.trim();
+    const state = process.env.DELIVERY_ZONE_STATE?.trim();
+    if (!city || !state) throw new Error("Set DELIVERY_ZONE_CITY and DELIVERY_ZONE_STATE before initializing the catalog.");
+    await prisma.$transaction(async tx => {
+      await tx.deliveryZone.updateMany({ data: { active: false } });
+      for (const pinPrefix of prefixes) {
+        await tx.deliveryZone.upsert({
+          where: { pinPrefix },
+          update: { city, state, active: true },
+          create: { pinPrefix, city, state, active: true }
+        });
+      }
+    });
+    console.log(`Seeded ${productSeeds.length} catalog items, ${categories.length} categories, and ${prefixes.length} delivery PIN prefixes only.`);
+    return;
+  }
+
   const customer = await upsertUser("customer@quickora.local", "9000000001", "Aarav Customer", Role.CUSTOMER, process.env.SEED_CUSTOMER_PASSWORD ?? "QuickoraCustomer123!");
   const admin = await upsertUser("admin@quickora.local", "9000000002", "Quickora Admin", Role.ADMIN, process.env.SEED_ADMIN_PASSWORD ?? "QuickoraAdmin123!");
   const rider = await upsertUser("rider@quickora.local", "9000000003", "Ravi Delivery", Role.DELIVERY, process.env.SEED_RIDER_PASSWORD ?? "QuickoraRider123!");

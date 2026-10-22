@@ -13,3 +13,13 @@ playwright-report/
 test-results/
 apps/api/prisma/dev.db
 *.zip
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+terraform.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

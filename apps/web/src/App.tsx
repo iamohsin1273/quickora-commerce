@@ -405,6 +405,7 @@ function SignInPage() {
 function CheckoutPage({ session }: { session?: SessionUser }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const demoPaymentEnabled = import.meta.env.DEV;
   const { lines, clear } = useCart();
   const [selectedAddress, setSelectedAddress] = useState("");
   const [coupon, setCoupon] = useState("");
@@ -497,7 +498,7 @@ function CheckoutPage({ session }: { session?: SessionUser }) {
         <div className="content-card">
           <h2 style={{ font: "700 17px Manrope", marginTop: 0 }}>3. Payment method</h2>
           <label className={`address-option${payment === "COD" ? " selected" : ""}`}><input type="radio" checked={payment === "COD"} onChange={() => setPayment("COD")} /><span><strong>Cash on delivery</strong><br /><small className="muted">Pay when your order reaches you</small></span></label>
-          <label className={`address-option${payment === "DEMO" ? " selected" : ""}`}><input type="radio" checked={payment === "DEMO"} onChange={() => setPayment("DEMO")} /><span><strong>Demo payment</strong><br /><small className="muted">Sandbox checkout only; no real payment is processed</small></span></label>
+          {demoPaymentEnabled && <label className={`address-option${payment === "DEMO" ? " selected" : ""}`}><input type="radio" checked={payment === "DEMO"} onChange={() => setPayment("DEMO")} /><span><strong>Demo payment</strong><br /><small className="muted">Sandbox checkout only; no real payment is processed</small></span></label>}
         </div>
       </div>
       <aside className="content-card cart-summary">
