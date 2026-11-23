@@ -1,0 +1,28 @@
+name: Quickora EKS checks
+
+on:
+  pull_request:
+    paths:
+      - 'deploy/eks/**'
+      - 'apps/**'
+      - 'packages/**'
+      - 'package*.json'
+      - '.dockerignore'
+      - '.github/workflows/eks-checks.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render Kubernetes manifests
+        run: kubectl kustomize deploy/eks/base
+      - name: Build API image and check migration CLI
+        run: |
+          docker build -f apps/api/Dockerfile -t quickora-api:check .
+          docker run --rm -e DATABASE_URL=postgresql://quickora:check@localhost:5432/quickora quickora-api:check npm run db:migrate -w @quickora/api -- --help
+      - name: Build storefront image
+        run: docker build -f apps/web/Dockerfile -t quickora-web:check .
