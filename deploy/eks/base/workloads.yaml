@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  selector:
+    app.kubernetes.io/name: quickora-api
+  ports:
+    - name: http
+      port: 4000
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app.kubernetes.io/name: quickora-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: quickora-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: quickora-api
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: api
+          image: quickora-api
+          command: [node, apps/api/dist/src/server.js]
+          ports:
+            - name: http
+              containerPort: 4000
+          env:
+            - name: COOKIE_SECURE
+              value: "true"
+            - name: WEB_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: quickora-runtime
+                  key: WEB_ORIGIN
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: quickora-api
+                  key: DATABASE_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: quickora-api
+                  key: JWT_SECRET
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: quickora-web
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: quickora-web
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: quickora-web
+          ports:
+            - name: http
+              containerPort: 80
+          securityContext:
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
