@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: quickora
+  namespace: argocd
+spec:
+  project: quickora
+  source:
+    repoURL: https://github.com/iamohsin1273/quickora-commerce.git
+    targetRevision: main
+    path: deploy/eks/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: quickora
