@@ -16,6 +16,9 @@ QUICKORA is an original, responsive quick-commerce demo for Chennai, built as a 
 - `apps/web`: React 18, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, Zustand, React Hook Form/Zod, Lucide and Recharts.
 - `apps/api`: Node.js 22, Express, TypeScript, Prisma 7 with the PostgreSQL driver adapter, PostgreSQL, Zod, bcrypt and JWT.
 - `packages/shared`: shared role/order types and INR formatting.
+- `infra/aws`: Terraform for the ECS Fargate deployment in Mumbai.
+- `deploy/eks`: Kubernetes manifests, a Kustomize base, and Argo CD staging templates.
+- `.github/workflows`: application CI with PostgreSQL integration tests and pull-request checks for the EKS manifests and container images.
 - `docs`: architecture, API, database, security, testing, deployment and user guidance.
 
 ## Requirements
@@ -89,9 +92,21 @@ npm run build
 - Map, geocoding, live GPS, external payment, messaging and real-time delivery dispatch are not integrated. Addresses are managed manually, and delivery task assignment is an administrative/demo operation.
 - Admin analytics metrics and charts are computed from persisted orders and order items.
 
-## Production notes
+## Deployment
 
-The production-oriented AWS/Terraform foundation, staged setup, and operator checklist are documented in [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md). It targets ECS Fargate in Mumbai and uses CloudFront's managed HTTPS hostname, so a custom domain is not required. Terraform has not been applied and no AWS resources have been created by this repository setup. The application still needs real payment, live dispatch/tracking, and operational support integrations before a full commercial launch; local demo credentials, seed orders, and payment behavior are not production features.
+- **Local demo.** Docker Compose starts Nginx, the API, and PostgreSQL. See [Docker Compose](#docker-compose).
+- **AWS ECS Fargate.** The Terraform configuration targets Mumbai and uses a CloudFront-managed HTTPS hostname. See the [ECS deployment guide](./docs/DEPLOYMENT.md).
+- **AWS EKS and Argo CD.** The Kubernetes foundation includes storefront and API deployments, internal services, health probes, and a Prisma migration Job. Argo CD runs migrations with a separate database role before a full sync rolls out the application. The staging template pins both images by digest and uses manual sync. See the [EKS deployment guide](./docs/EKS.md) for prerequisites and rollout steps.
+
+Render the EKS base locally with `kubectl`. Rendering requires no cluster or AWS credentials.
+
+```sh
+kubectl kustomize deploy/eks/base
+```
+
+EKS Terraform provisioning, ECR publishing through GitHub OIDC, HTTPS ingress, managed secrets, Prometheus and Grafana, and AWS cost controls are planned stages. The Kubernetes foundation has not been deployed to AWS.
+
+Use the seeded credentials and demo checkout only in local or disposable environments. A commercial launch still requires real payment processing, live dispatch and tracking, and operational support.
 
 ## Packaging
 
